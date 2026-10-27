@@ -54,7 +54,7 @@ module sync_fifo #(
 
   // ---------------------------------------------------------------- accepts
   logic do_wr, do_rd;
-`ifdef BUG_OVERFLOW_WRITE
+`ifdef BUG_OVERFLOW_WRITE                          // these are called compiler directives. they happen before the simulation time, at compile time , and decide which line of the code gets compiled. 
   assign do_wr = wr_en;                           // BUG: write accepted when full
 `else
   assign do_wr = wr_en && !full;
