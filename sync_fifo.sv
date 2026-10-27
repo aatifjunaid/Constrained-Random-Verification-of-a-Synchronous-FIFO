@@ -109,7 +109,7 @@ module sync_fifo #(
 `else
       overflow    <= wr_en && full;
 `endif
-`ifdef BUG_UNDERFLOW_FLAG_CORNER
+`ifdef BUG_UNDERFLOW_FLAG_CORNER                  //the data being written this cycle can’t be read this cycle.hence a bug. 
       underflow   <= rd_en && empty && !wr_en;    // BUG: missed if wr_en also high
 `else
       underflow   <= rd_en && empty;
