@@ -70,7 +70,7 @@ module sync_fifo #(
   always_comb begin
     wdata_eff = wdata;
 `ifdef BUG_DATA_ALLONES
-    // BUG: corner-case data corruption (only exposed when wdata == all ones)
+    // BUG: corner-case data corruption (only exposed when wdata == all ones);  Buggy design: 0xFF written is stored as 0xFE, so you read back the wrong value.
     if (wdata == {DATA_W{1'b1}}) wdata_eff = wdata ^ {{(DATA_W-1){1'b0}}, 1'b1};                              // BUG_DATA_ALLONES: flips bit 0 only when wdata == all ones (0xFF -> 0xFE).
                                                                                                               // Corner-case fault. Caught by the scoreboard DATA check, because c_data biases
                                                                                                               // wdata toward 0 / all-ones. cg_data confirms those values were sent.
