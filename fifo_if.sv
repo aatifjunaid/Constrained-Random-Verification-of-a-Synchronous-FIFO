@@ -23,10 +23,14 @@ interface fifo_if #(
   logic                     overflow;
   logic                     underflow;
 
+
+  // drv_cb decides when the testbench drives signals (1 ns after the clock edge).
+  //mon_cb decides when it samples them (just before the edge).
+  //That avoids races with the DUT.
   clocking drv_cb @(posedge clk);
     default input #1step output #1;
-    output rst_n, wr_en, wdata, rd_en;
-  endclocking
+    output rst_n, wr_en, wdata, rd_en; //drives the dut; DUT’s inputs are clk, rst_n, wr_en, wdata and rd_en
+  endclocking                           // clk comes from tb_top rather than the driver. 
 
   clocking mon_cb @(posedge clk);
     default input #1step;
