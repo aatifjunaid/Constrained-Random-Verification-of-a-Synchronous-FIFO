@@ -13,19 +13,18 @@ and 100% functional coverage.
 ## Files
 
 ```
-sync_fifo.sv       DUT (+ BUG_* injection switches)
-fifo_sva.sv        assertions + cover properties, bound into the DUT
-fifo_if.sv         interface with driver/monitor clocking blocks
-fifo_tb_pkg.sv     txn, generator, driver, monitor, scoreboard, coverage, env, tests
-tb_top.sv          clock, DUT, test launcher, PASS/FAIL verdict
-run.sh             one compile + run          (SIM=questa|vcs|xrun)
-regress.sh         golden regression: tests x seeds x 4 geometries
-bug_regress.sh     mutation campaign: every bug must make the TB FAIL
+rtl/sync_fifo.sv        DUT (+ BUG_* injection switches)
+sva/fifo_sva.sv         assertions + cover properties, bound into the DUT
+tb/fifo_if.sv           interface with driver/monitor clocking blocks
+tb/fifo_tb_pkg.sv       txn, generator, driver, monitor, scoreboard, coverage, env, tests
+tb/tb_top.sv            clock, DUT, test launcher, PASS/FAIL verdict
+sim/run.sh              one compile + run          (SIM=questa|vcs|xrun)
+sim/regress.sh          golden regression: tests x seeds x 4 geometries
+sim/bug_regress.sh      mutation campaign: every bug must make the TB FAIL
 ```
 
-`run.sh`, `regress.sh` and `bug_regress.sh` are for a local command-line flow
-and expect the files under `rtl/`, `sva/`, `tb/` and `sim/` folders. They have
-not been run yet, so use the EDA Playground flow below.
+The scripts in `sim/` are for a local command-line flow (Questa, VCS or
+Xcelium). They have not been run yet, so use the EDA Playground flow below.
 
 ## Design spec
 
@@ -108,7 +107,7 @@ fails if coverage is not closed.
 
 Needs a validated account for the commercial simulators.
 
-1. **Design pane:** paste `sync_fifo.sv`.
+1. **Design pane:** paste `rtl/sync_fifo.sv`.
 2. **Testbench pane:** add tabs `fifo_if.sv`, `fifo_tb_pkg.sv`, `fifo_sva.sv`, `tb_top.sv`. In `testbench.sv` (the default tab) put:
    ```
    `include "fifo_if.sv"
