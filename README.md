@@ -151,16 +151,16 @@ testbench.
 | `WPTR_WRAP` | write pointer skips slot 0 after wrap | CAUGHT (`smoke`): scoreboard only (first error cycle 47, DATA mismatch), 0 SVA failures |
 | `DATA_ALLONES` | all-ones data stored with bit 0 flipped | CAUGHT (`smoke`): scoreboard only (first error cycle 33, `0xfe` vs `0xff`), 0 SVA failures |
 | `RESET_RPTR` | reset does not re-clear the read pointer | CAUGHT (`reset`): scoreboard only (first error cycle 47), 0 SVA failures. Not visible in `smoke`, which has no mid-traffic reset |
-| `OVERFLOW_WRITE` | write accepted while full | not yet run |
-| `UNDERFLOW_READ` | read accepted while empty | not yet run |
-| `SIMUL_COUNT` | rd+wr in the same cycle counts +1 | not yet run |
-| `NO_OVERFLOW_FLAG` | `overflow` never pulses | not yet run |
-| `UNDERFLOW_FLAG_CORNER` | no `underflow` when wr+rd at empty | not yet run |
-| `LAST_ENTRY_DROP` | wr+rd at almost-full counted but not stored | not yet run |
+| `OVERFLOW_WRITE` | write accepted while full | CAUGHT (`smoke`): scoreboard (first error cycle 22, COUNT got 20 exp 16) + SVA `a_count_range` |
+| `UNDERFLOW_READ` | read accepted while empty | CAUGHT (`smoke`): scoreboard (first error cycle 42) + SVA `a_count_range` |
+| `SIMUL_COUNT` | rd+wr in the same cycle counts +1 | CAUGHT (`smoke`): scoreboard (first error cycle 47) + SVA `a_count_update` |
+| `NO_OVERFLOW_FLAG` | `overflow` never pulses | CAUGHT (`smoke`): scoreboard (first error cycle 22, OVERFLOW got 0 exp 1) + SVA `a_overflow_flag` |
+| `UNDERFLOW_FLAG_CORNER` | no `underflow` when wr+rd at empty | CAUGHT (`smoke`): scoreboard (cycle 46, UNDERFLOW got 0 exp 1) + SVA `a_underflow_flag`; a single cycle exposes it |
+| `LAST_ENTRY_DROP` | wr+rd at almost-full counted but not stored | CAUGHT (`random`): scoreboard only (first error cycle 382, DATA mismatch), 0 SVA failures |
 
-The bugs caught by the scoreboard only (`WPTR_WRAP`, `DATA_ALLONES`,
-`RESET_RPTR`) show where flag/count assertions are blind: the end-to-end data
-check is what catches them. Update the last six rows as each one is run.
+All 10 injected bugs were caught on Xcelium. The bugs caught by the scoreboard
+only (`WPTR_WRAP`, `DATA_ALLONES`, `LAST_ENTRY_DROP`, `RESET_RPTR`) show where
+flag/count assertions are blind: the end-to-end data check is what catches them.
 
 ## Simulator support
 
